@@ -1,4 +1,4 @@
-# ShopBridge Logistics Service API
+﻿# ShopBridge Logistics Service API
 
 This repository implements the **Logistics Service** of the ShopBridge system, designed as part of the **MVP project for the Third Sprint of the Full Stack Development postgraduate program at CCEC - PUC-Rio**. The service provides a fully functional API for managing customer shipments, enabling creation, retrieval, update, and deletion of shipment data in a microservices architecture.
 
@@ -10,14 +10,14 @@ Developed using **ASP.NET Core**, the service follows a layered architecture and
 
 ```
 shopbridge_logistics/
-?
-??? Controllers/         # API controllers handling HTTP requests
-??? Models/              # Domain models and DTOs
-??? Services/            # Business logic and service layer
-??? Repositories/        # Data persistence and database access
-??? Migrations/          # EF Core database migrations
-??? LogisticsApi.csproj      # Project definition
-??? README.md
+│
+├── Controllers/         # API controllers handling HTTP requests
+├── Models/              # Domain models and DTOs
+├── Services/            # Business logic and service layer
+├── Repositories/        # Data persistence and database access
+├── Migrations/          # EF Core database migrations
+├── LogisticsApi.csproj      # Project definition
+└── README.md
 ```
 
 ---
@@ -75,6 +75,6 @@ All endpoints follow REST conventions and return appropriate HTTP status codes (
 
 ## References
 
-[1] S. Newman, *Building Microservices: Designing Fine-Grained Systems*. O�Reilly Media, 2015.  
+[1] S. Newman, *Building Microservices: Designing Fine-Grained Systems*. O’Reilly Media, 2015.  
 [2] Microsoft, *ASP.NET Core Documentation*, 2025. Available: https://docs.microsoft.com/aspnet/core  
 .
