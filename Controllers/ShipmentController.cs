@@ -78,7 +78,7 @@ namespace LogisticsAPI.Controllers
         }
 
         [HttpPut]
-        [SwaggerOperation(Summary = "Updates an Shipment record.")]
+        [SwaggerOperation(Summary = "Updates a Shipment record.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
