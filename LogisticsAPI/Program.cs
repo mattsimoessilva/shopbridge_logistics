@@ -1,22 +1,37 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using LogisticsAPI.Data;
+using LogisticsAPI.Models.Profiles;
 using LogisticsAPI.Repositories;
 using LogisticsAPI.Repositories.Interfaces;
 using LogisticsAPI.Services;
 using LogisticsAPI.Services.Interfaces;
+using System;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Adding EF Core with Sqlite.
-builder.Services.AddDbContext<LogisticsDbContext>(options =>
-    options.UseSqlite("Data Source=logistics.db"));
+builder.Services.AddDbContext<LogisticsAppDbContext>(options =>
+    options.UseSqlite("Data Source=logisticsapi.db"));
 
-// Adding services.
+// Adding AutoMapper
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<ShipmentProfile>();
+    // cfg.AddProfile<AddressProfile>();
+});
+
+// Adding Repositories
 builder.Services.AddScoped<IShipmentRepository, ShipmentRepository>();
+// builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+
+// Adding Services
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
+// builder.Services.AddScoped<IAddressService, AddressService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -43,9 +58,16 @@ var app = builder.Build();
 // Applying migrations.
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<LogisticsDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<LogisticsAppDbContext>();
     db.Database.Migrate();
 }
+
+// Initializing Database
+//using (var scope = app.Services.CreateScope())
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<LogisticsAppDbContext>();
+//    DbInitializer.Initialize(context);
+//}
 
 // Configuring the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
