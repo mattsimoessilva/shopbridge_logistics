@@ -12,6 +12,5 @@ namespace LogisticsAPI.Data
 
         public DbSet<Shipment> Shipments => Set<Shipment>();
 
-        // public DbSet<Address> Addresses => Set<Address>();
     }
 }

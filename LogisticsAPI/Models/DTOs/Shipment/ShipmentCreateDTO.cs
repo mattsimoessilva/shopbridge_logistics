@@ -8,21 +8,37 @@ namespace LogisticsAPI.Models.DTOs.Shipment
         public required Guid OrderId { get; set; }
 
         [Required]
-        public required Guid CustomerId { get; set; }
+        [MaxLength(50)]
+        public required string Status { get; set; } 
+
+        public DateOnly? DispatchDate { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public required string Status { get; set; }
+        public required string Carrier { get; set; }
 
-        public DateOnly DispatchDate { get; set; }
-
-        [MaxLength(50)]
-        public required string Carrrier { get; set; }
-
+        [Required]
         [MaxLength(30)]
-        public required string ServiceLevel { get; set; }
+        public required string ServiceLevel { get; set; } 
 
         [Required]
-        public required Guid DestinationAdressId { get; set; }
+        [MaxLength(100)]
+        public required string Street { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public required string City { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public required string State { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public required string PostalCode { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public required string Country { get; set; }
     }
 }

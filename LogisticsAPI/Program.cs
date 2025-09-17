@@ -21,16 +21,13 @@ builder.Services.AddDbContext<LogisticsAppDbContext>(options =>
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile<ShipmentProfile>();
-    // cfg.AddProfile<AddressProfile>();
 });
 
 // Adding Repositories
 builder.Services.AddScoped<IShipmentRepository, ShipmentRepository>();
-// builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
 // Adding Services
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
-// builder.Services.AddScoped<IAddressService, AddressService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

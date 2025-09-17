@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace LogisticsAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller")]
+    [Route("api/[controller]")]
     public class ShipmentController : ControllerBase
     {
         private readonly IShipmentService _service;
@@ -43,7 +43,7 @@ namespace LogisticsAPI.Controllers
 
         [HttpGet]
         [SwaggerOperation(Summary = "Retrieves all Shipments.")]
-        [ProducesResponseType(typeof(IEnumerable<ShipmentReadDTO>, StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ShipmentReadDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
             try

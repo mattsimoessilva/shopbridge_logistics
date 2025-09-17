@@ -8,11 +8,9 @@ namespace LogisticsAPI.Models.DTOs.Shipment
 
         public Guid OrderId { get; set; }
 
-        public Guid CustomerId { get; set; }
-
         public required string Status { get; set; }
 
-        public DateOnly DispatchDate { get; set; }
+        public DateOnly? DispatchDate { get; set; }
 
         public DateOnly? ExpectedArrival { get; set; }
 
@@ -22,7 +20,15 @@ namespace LogisticsAPI.Models.DTOs.Shipment
 
         public required string ServiceLevel { get; set; }
 
-        public Guid DestinationAddressId { get; set; }
+        public required string Street { get; set; }
+
+        public required string City { get; set; }
+
+        public required string State { get; set; }
+
+        public required string PostalCode { get; set; }
+
+        public required string Country { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

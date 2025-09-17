@@ -22,6 +22,19 @@ namespace LogisticsAPI.Models.DTOs.Shipment
         [MaxLength(30)]
         public string? ServiceLevel { get; set; }
 
-        public Guid? DestinationAddressId { get; set; }
+        [MaxLength(100)]
+        public string? Street { get; set; }
+
+        [MaxLength(50)]
+        public string? City { get; set; }
+
+        [MaxLength(50)]
+        public string? State { get; set; }
+
+        [MaxLength(20)]
+        public string? PostalCode { get; set; }
+
+        [MaxLength(50)]
+        public string? Country { get; set; }
     }
 }

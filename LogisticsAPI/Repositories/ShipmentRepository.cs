@@ -45,7 +45,6 @@ namespace LogisticsAPI.Repositories
 
             return await _context.Shipments
                 .AsNoTracking()
-                .Include(p => p.DestinationAdress)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
