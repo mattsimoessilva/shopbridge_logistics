@@ -5,8 +5,6 @@ using LogisticsAPI.Models.Entities;
 using LogisticsAPI.Services.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
-
-
 namespace LogisticsAPI.Controllers
 {
     [ApiController]
@@ -22,6 +20,7 @@ namespace LogisticsAPI.Controllers
 
         [HttpPost]
         [SwaggerOperation(Summary = "Creates a new Shipment.")]
+        [ProducesResponseType(typeof(ShipmentCreateDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Create([FromBody] ShipmentCreateDTO dto)

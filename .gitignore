@@ -15,9 +15,6 @@ out/
 # ASP.NET Core secrets
 secrets.json
 
-# Entity Framework migrations (optional)
-Migrations/
-
 # Logs
 *.log
 

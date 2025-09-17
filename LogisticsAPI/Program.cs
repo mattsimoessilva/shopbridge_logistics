@@ -39,8 +39,8 @@ builder.Services.AddSwaggerGen(c =>
     c.EnableAnnotations();
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "v1",
         Title = "Logistics API",
+        Version = "v1",
         Description = "An ASP.NET Core Web API for managing logistics in the ShopBridge system.",
         Contact = new OpenApiContact
         {
