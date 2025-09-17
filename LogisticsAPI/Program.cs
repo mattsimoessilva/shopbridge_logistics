@@ -59,12 +59,12 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
-// Initializing Database
-//using (var scope = app.Services.CreateScope())
-//{
-//    var context = scope.ServiceProvider.GetRequiredService<LogisticsAppDbContext>();
-//    DbInitializer.Initialize(context);
-//}
+// Initializing database
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<LogisticsAppDbContext>();
+    DbInitializer.Initialize(context);
+}
 
 // Configuring the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
