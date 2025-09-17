@@ -11,9 +11,9 @@ namespace LogisticsAPI.Services
     public class ShipmentService : IShipmentService
     {
         private readonly IShipmentRepository _repository;
-        private readonly IActionResultTypeMapper _mapper;
+        private readonly IMapper _mapper;
 
-        public ShipmentService(IShipmentRepository repository, IActionResultTypeMapper mapper)
+        public ShipmentService(IShipmentRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

@@ -32,6 +32,9 @@ namespace LogisticsAPI.Models.Entities
         [MaxLength(30)]
         public required string ServiceLevel { get; set; }
 
+        [ForeignKey("DestinationAdressId")]
+        public required Address DestinationAdress { get; set; }
+
         [Required]
         public required Guid DestinationAdressId { get; set; }
 

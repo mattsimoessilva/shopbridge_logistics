@@ -1,30 +1,28 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using LogisticsAPI.Models.DTOs.Shipment;
+using LogisticsAPI.Models.DTOs.Address;
 using LogisticsAPI.Models.Entities;
 using LogisticsAPI.Services.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
-
-
 
 namespace LogisticsAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller")]
-    public class ShipmentController : ControllerBase
+    public class AddressController : ControllerBase
     {
-        private readonly IShipmentService _service;
+        private readonly IAddressService _service;
 
-        public ShipmentController(IShipmentService service)
+        public AddressController(IAddressService service)
         {
             _service = service;
         }
 
         [HttpPost]
-        [SwaggerOperation(Summary = "Creates a new Shipment.")]
+        [SwaggerOperation(Summary = "Creates a new Address.")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([FromBody] ShipmentCreateDTO dto)
+        public async Task<IActionResult> Create([FromBody] AddressCreateDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -42,8 +40,8 @@ namespace LogisticsAPI.Controllers
         }
 
         [HttpGet]
-        [SwaggerOperation(Summary = "Retrieves all Shipments.")]
-        [ProducesResponseType(typeof(IEnumerable<ShipmentReadDTO>, StatusCodes.Status200OK)]
+        [SwaggerOperation(Summary = "Retrieves all Addresss.")]
+        [ProducesResponseType(typeof(IEnumerable<AddressReadDTO>, StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -58,8 +56,8 @@ namespace LogisticsAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [SwaggerOperation(Summary = "Retrieves a specific Shipment by ID.")]
-        [ProducesResponseType(typeof(ShipmentReadDTO), StatusCodes.Status200OK)]
+        [SwaggerOperation(Summary = "Retrieves a specific Address by ID.")]
+        [ProducesResponseType(typeof(AddressReadDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -77,12 +75,12 @@ namespace LogisticsAPI.Controllers
         }
 
         [HttpPut]
-        [SwaggerOperation(Summary = "Updates a Shipment record.")]
+        [SwaggerOperation(Summary = "Updates a Address record.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update([FromBody] ShipmentUpdateDTO dto)
+        public async Task<IActionResult> Update([FromBody] AddressUpdateDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -106,7 +104,7 @@ namespace LogisticsAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        [SwaggerOperation(Summary = "Deletes a Shipment by ID.")]
+        [SwaggerOperation(Summary = "Deletes a Address by ID.")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
