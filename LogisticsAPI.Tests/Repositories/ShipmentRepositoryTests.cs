@@ -194,23 +194,17 @@ namespace LogisticsAPI.Tests.Repositories
             await context.SaveChangesAsync();
 
             // Act
-            entity.Name = "New Name";
-            entity.ShortDescription = "New Short Description";
-            entity.FullDescription = "New Full Description";
-            entity.Price = 0;
-            entity.DiscountPrice = 0;
-            entity.IsActive = false;
-            entity.IsFeatured = false;
-            entity.StockQuantity = 0;
-            entity.MinimumStockThreshold = 0;
-            entity.AllowBackorder = false;
-            entity.Brand = "New Brand";
-            entity.Category = "New Category";
-            entity.Tags = "new, more_new";
-            entity.ImageUrl = "/images/new_stuff/new-image.jpg";
-            entity.ThumbnailUrl = "/images/new_stuff/new-thumb.jpg";
-            entity.SeoTitle = "New Seo Title";
-            entity.Slug = "New Slug";
+            entity.Status = "Delivered";
+            entity.DispatchDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1));
+            entity.ExpectedArrival = DateOnly.FromDateTime(DateTime.UtcNow);
+            entity.TrackingCode = "TRK123456789";
+            entity.Carrier = "FedEx";
+            entity.ServiceLevel = "Express";
+            entity.Street = "789 Pine St";
+            entity.City = "New York";
+            entity.State = "NY";
+            entity.PostalCode = "10001";
+            entity.Country = "USA";
 
             var act = await repository.UpdateAsync(entity);
 
@@ -249,7 +243,7 @@ namespace LogisticsAPI.Tests.Repositories
             var context = GetDbContext();
             var repository = GetRepository(context);
 
-            var entity = new Shipment { Id = Guid.NewGuid(), Name = "Wireless Mouse", ShortDescription = "Ergonomic wireless mouse", FullDescription = "Comfortable wireless mouse with adjustable DPI and silent clicks.", Price = 129.99m, DiscountPrice = 99.99m, IsActive = true, IsFeatured = true, SKU = "WM-001", StockQuantity = 150, MinimumStockThreshold = 10, AllowBackorder = false, Brand = "LogiTech", Category = "Accessories", Tags = "mouse,wireless,ergonomic", ImageUrl = "/images/entities/wireless-mouse.jpg", ThumbnailUrl = "/images/entities/thumbs/wireless-mouse.jpg", SeoTitle = "Wireless Mouse - Ergonomic & Silent", Slug = "wireless-mouse", Variants = new List<ShipmentVariant>(), Reviews = new List<ShipmentReview>() };
+            var entity = new Shipment { Id = Guid.NewGuid(), OrderId = Guid.NewGuid(), Status = "Shipped", DispatchDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-2)), ExpectedArrival = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(3)), TrackingCode = "TRK987654321", Carrier = "UPS", ServiceLevel = "Standard", Street = "456 Oak Ave", City = "Chicago", State = "IL", PostalCode = "60601", Country = "USA", CreatedAt = DateTime.UtcNow };
 
             context.Shipments.Add(entity);
             await context.SaveChangesAsync();
@@ -269,7 +263,7 @@ namespace LogisticsAPI.Tests.Repositories
             var context = GetDbContext();
             var repository = GetRepository(context);
 
-            var entity = new Shipment { Id = Guid.NewGuid(), Name = "Wireless Mouse", ShortDescription = "Ergonomic wireless mouse", FullDescription = "Comfortable wireless mouse with adjustable DPI and silent clicks.", Price = 129.99m, DiscountPrice = 99.99m, IsActive = true, IsFeatured = true, SKU = "WM-001", StockQuantity = 150, MinimumStockThreshold = 10, AllowBackorder = false, Brand = "LogiTech", Category = "Accessories", Tags = "mouse,wireless,ergonomic", ImageUrl = "/images/entities/wireless-mouse.jpg", ThumbnailUrl = "/images/entities/thumbs/wireless-mouse.jpg", SeoTitle = "Wireless Mouse - Ergonomic & Silent", Slug = "wireless-mouse", Variants = new List<ShipmentVariant>(), Reviews = new List<ShipmentReview>() };
+            var entity = new Shipment { Id = Guid.NewGuid(), OrderId = Guid.NewGuid(), Status = "Shipped", DispatchDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-2)), ExpectedArrival = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(3)), TrackingCode = "TRK987654321", Carrier = "UPS", ServiceLevel = "Standard", Street = "456 Oak Ave", City = "Chicago", State = "IL", PostalCode = "60601", Country = "USA", CreatedAt = DateTime.UtcNow };
 
             context.Shipments.Add(entity);
             await context.SaveChangesAsync();
