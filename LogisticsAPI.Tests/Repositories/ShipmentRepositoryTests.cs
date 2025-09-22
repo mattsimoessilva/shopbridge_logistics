@@ -3,10 +3,8 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using LogisticsAPI.Data;
-using LogisticsAPI.Models.DTOs.Shipment;
 using LogisticsAPI.Models.Entities;
 using LogisticsAPI.Repositories;
-using System.Runtime.Intrinsics.Arm;
 
 namespace LogisticsAPI.Tests.Repositories
 {

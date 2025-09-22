@@ -27,6 +27,7 @@ namespace LogisticsAPI.Services
             var entity = _mapper.Map<Shipment>(dto);
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
+            entity.TrackingCode = $"TRK-{Guid.NewGuid().ToString("N")[..8].ToUpper()}";
 
             await _repository.AddAsync(entity);
 
