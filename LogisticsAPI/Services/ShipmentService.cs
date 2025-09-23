@@ -68,11 +68,13 @@ namespace LogisticsAPI.Services
             if (existing == null)
                 return false;
 
+            _mapper.Map(dto, existing);
+            existing.UpdatedAt = DateTime.UtcNow;
+
             await _repository.UpdateAsync(existing);
 
             return true;
         }
-
         public async Task<bool> DeleteAsync(Guid id)
         {
             if (id == Guid.Empty)
@@ -82,5 +84,26 @@ namespace LogisticsAPI.Services
 
             return true;
         }
+
+        public async Task<bool> UpdateStatusAsync(Guid id, ShipmentStatusUpdateDTO dto)
+        {
+            if (id == Guid.Empty)
+                throw new ArgumentException("Invalid ID", nameof(id));
+
+            if (string.IsNullOrWhiteSpace(dto.Status))
+                throw new ArgumentException("Status cannot be null or empty.", nameof(dto.Status));
+
+            var existing = await _repository.GetByIdAsync(id);
+            if (existing == null)
+                return false;
+
+            existing.Status = dto.Status;
+            existing.UpdatedAt = DateTime.UtcNow;
+
+            await _repository.UpdateAsync(existing);
+
+            return true;
+        }
+
     }
 }

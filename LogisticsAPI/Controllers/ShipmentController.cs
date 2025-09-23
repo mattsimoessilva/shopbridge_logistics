@@ -124,5 +124,34 @@ namespace LogisticsAPI.Controllers
             }
 
         }
+
+        [HttpPatch("{id}/status")]
+        [SwaggerOperation(Summary = "Updates only the status of a Shipment record.")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] ShipmentStatusUpdateDTO dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var success = await _service.UpdateStatusAsync(id, dto);
+                if (!success)
+                    return NotFound();
+
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { error = ex.ParamName + " is invalid." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = ex.Message });
+            }
+        }
     }
 }
