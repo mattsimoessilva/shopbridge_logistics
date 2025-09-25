@@ -85,7 +85,7 @@ namespace LogisticsAPI.Services
             return true;
         }
 
-        public async Task<bool> UpdateStatusAsync(Guid id, ShipmentStatusUpdateDTO dto)
+        public async Task<bool> UpdateStatusAsync(Guid id, ShipmentStatusPatchDTO dto)
         {
             if (id == Guid.Empty)
                 throw new ArgumentException("Invalid ID", nameof(id));

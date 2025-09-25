@@ -39,12 +39,12 @@ builder.Services.AddSwaggerGen(c =>
     c.EnableAnnotations();
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Logistics API",
+        Title = "ShopBridge - Logistics Service",
         Version = "v1",
-        Description = "An ASP.NET Core Web API for managing logistics in the ShopBridge system.",
+        Description = "A RESTful service for managing shipments and verifying shipping availability within the ShopBridge platform.\r\nIt provides endpoints to create, update, track, and remove shipments, as well as to validate addresses and confirm serviceable destinations.",
         Contact = new OpenApiContact
         {
-            Name = "Matheus Simões",
+            Name = "@mattsimoessilva",
             Email = "matheussimoesdasilva@outlook.com"
         }
     });

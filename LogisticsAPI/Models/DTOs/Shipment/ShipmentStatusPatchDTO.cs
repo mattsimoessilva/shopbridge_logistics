@@ -2,7 +2,7 @@
 
 namespace LogisticsAPI.Models.DTOs.Shipment
 {
-    public class ShipmentStatusUpdateDTO
+    public class ShipmentStatusPatchDTO
     {
 
         [MaxLength(50)]
