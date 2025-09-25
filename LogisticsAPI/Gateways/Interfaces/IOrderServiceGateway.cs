@@ -1,9 +1,10 @@
 ﻿using LogisticsAPI.Models.DTOs.External.OrderService;
+using LogisticsAPI.Models.Results;
 
 namespace LogisticsAPI.Gateways.Interfaces
 {
     public interface IOrderServiceGateway
     {
-        Task<bool> UpdateOrderStatusAsync(Guid orderId, OrderStatusPatchDTO dto);
+        Task<GatewayResult> UpdateOrderStatusAsync(Guid orderId, OrderStatusPatchDTO dto);
     }
 }

@@ -107,15 +107,20 @@ namespace LogisticsAPI.Services
 
             if (orderStatus != null)
             {
-                var success = await _gateway.UpdateOrderStatusAsync(
+                var result = await _gateway.UpdateOrderStatusAsync(
                     existing.OrderId,
                     new OrderStatusPatchDTO { Status = orderStatus }
                 );
 
-                if (!success)
+                if (!result.Success)
                 {
-                    throw new InvalidOperationException(
-                        $"Failed to update Order {existing.OrderId} status to {orderStatus}. Shipment not updated.");
+                    var message = $"Failed to update Order {existing.OrderId} status to {orderStatus}. " +
+                                  $"Shipment not updated. Reason: {result.Message}";
+
+                    if (!string.IsNullOrWhiteSpace(result.Details))
+                        message += $" Details: {result.Details}";
+
+                    throw new InvalidOperationException(message);
                 }
             }
 

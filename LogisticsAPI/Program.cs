@@ -1,18 +1,19 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using LogisticsAPI.Data;
+﻿using LogisticsAPI.Data;
+using LogisticsAPI.Gateways;
+using LogisticsAPI.Gateways.Interfaces;
+using LogisticsAPI.Mappers;
 using LogisticsAPI.Models.Profiles;
 using LogisticsAPI.Repositories;
 using LogisticsAPI.Repositories.Interfaces;
 using LogisticsAPI.Services;
 using LogisticsAPI.Services.Interfaces;
-using LogisticsAPI.Gateways;
-using LogisticsAPI.Gateways.Interfaces;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Reflection;
-using LogisticsAPI.Mappers;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,10 +50,11 @@ builder.Services.AddScoped<IShippingService, ShippingService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
-     {
-         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-     });
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {

@@ -20,7 +20,7 @@ namespace LogisticsAPI.Utils
         public static string? MapToOrderStatus(ShipmentStatus shipmentStatus) =>
             shipmentStatus switch
             {
-                ShipmentStatus.InTransit => "In Transit",
+                ShipmentStatus.InTransit => "InTransit",
                 ShipmentStatus.Completed => "Completed",
                 ShipmentStatus.Cancelled => "Cancelled",
                 _ => null
