@@ -21,11 +21,15 @@ namespace LogisticsAPI.Gateways
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
 
-            if (!input.Country.Equals("BR", StringComparison.OrdinalIgnoreCase))
+            var validCountryNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "BR", "Brasil", "Brazil"
+            };
+
+            if (!validCountryNames.Contains(input.Country))
                 return null;
 
-            var response = await _httpClient.GetAsync(
-                $"https://viacep.com.br/ws/{input.PostalCode}/json/");
+            var response = await _httpClient.GetAsync($"ws/{input.PostalCode}/json/");
 
             if (!response.IsSuccessStatusCode)
                 return null;

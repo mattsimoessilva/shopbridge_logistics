@@ -45,9 +45,7 @@ namespace LogisticsAPI.Services
 
             bool matches =
                 string.Equals(dto.City, normalized.City, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(dto.State, normalized.State, StringComparison.OrdinalIgnoreCase) &&
-                (string.IsNullOrWhiteSpace(dto.Street) ||
-                 normalized.Street?.Contains(dto.Street, StringComparison.OrdinalIgnoreCase) == true);
+                string.Equals(dto.State, normalized.State, StringComparison.OrdinalIgnoreCase);
 
             var response = _mapper.Map<AvailabilityResponseDTO>(normalized);
             response.Valid = matches;

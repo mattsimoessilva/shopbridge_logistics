@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -8,8 +8,11 @@ using LogisticsAPI.Repositories;
 using LogisticsAPI.Repositories.Interfaces;
 using LogisticsAPI.Services;
 using LogisticsAPI.Services.Interfaces;
+using LogisticsAPI.Gateways;
+using LogisticsAPI.Gateways.Interfaces;
 using System;
 using System.Reflection;
+using LogisticsAPI.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,13 +24,22 @@ builder.Services.AddDbContext<LogisticsAppDbContext>(options =>
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile<ShipmentProfile>();
+    cfg.AddProfile<AvailabilityProfile>();
 });
 
 // Adding Repositories
 builder.Services.AddScoped<IShipmentRepository, ShipmentRepository>();
 
+// Adding Gateways
+builder.Services.AddHttpClient<IAddressValidationGateway, ViaCepGateway>(client =>
+{
+    client.BaseAddress = new Uri("https://viacep.com.br/"); 
+    client.Timeout = TimeSpan.FromSeconds(10);
+});
+
 // Adding Services
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
+builder.Services.AddScoped<IShippingService, ShippingService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
