@@ -38,11 +38,6 @@ builder.Services.AddHttpClient<IAddressValidationGateway, ViaCepGateway>(client 
     client.BaseAddress = new Uri("https://viacep.com.br/"); 
     client.Timeout = TimeSpan.FromSeconds(10);
 });
-builder.Services.AddHttpClient<IOrderServiceGateway, OrderServiceGateway>(client =>
-{
-    client.BaseAddress = new Uri("http://localhost:3000/");
-    client.Timeout = TimeSpan.FromSeconds(10);
-});
 
 // Adding Services
 builder.Services.AddScoped<IShipmentService, ShipmentService>();

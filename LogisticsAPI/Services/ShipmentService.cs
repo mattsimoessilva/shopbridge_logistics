@@ -16,13 +16,11 @@ namespace LogisticsAPI.Services
     public class ShipmentService : IShipmentService
     {
         private readonly IShipmentRepository _repository;
-        private readonly IOrderServiceGateway _gateway;
         private readonly IMapper _mapper;
 
-        public ShipmentService(IShipmentRepository repository, IOrderServiceGateway gateway, IMapper mapper)
+        public ShipmentService(IShipmentRepository repository, IMapper mapper)
         {
             _repository = repository;
-            _gateway = gateway;
             _mapper = mapper;
         }
 
@@ -103,27 +101,6 @@ namespace LogisticsAPI.Services
             if (!ShipmentStatusUtil.IsValidTransition(existing.Status, patch))
                 throw new InvalidOperationException($"Invalid transition {existing.Status} → {patch}");
 
-            var orderStatus = ShipmentStatusUtil.MapToOrderStatus(patch);
-
-            if (orderStatus != null)
-            {
-                var result = await _gateway.UpdateOrderStatusAsync(
-                    existing.OrderId,
-                    new OrderStatusPatchDTO { Status = orderStatus }
-                );
-
-                if (!result.Success)
-                {
-                    var message = $"Failed to update Order {existing.OrderId} status to {orderStatus}. " +
-                                  $"Shipment not updated. Reason: {result.Message}";
-
-                    if (!string.IsNullOrWhiteSpace(result.Details))
-                        message += $" Details: {result.Details}";
-
-                    throw new InvalidOperationException(message);
-                }
-            }
-
             existing.Status = patch;
             existing.UpdatedAt = DateTime.UtcNow;
 
@@ -131,5 +108,6 @@ namespace LogisticsAPI.Services
 
             return true;
         }
+
     }
 }
