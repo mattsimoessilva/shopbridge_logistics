@@ -1,9 +1,10 @@
 ﻿using LogisticsAPI.Gateways.Interfaces;
 using LogisticsAPI.Models.DTOs.External.OrderService;
+using LogisticsAPI.Models.Results;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
-using LogisticsAPI.Models.Results;
 
 namespace LogisticsAPI.Gateways
 {
@@ -24,11 +25,12 @@ namespace LogisticsAPI.Gateways
             if (string.IsNullOrWhiteSpace(dto.Status))
                 throw new ArgumentException("Status cannot be null or empty.", nameof(dto.Status));
 
-            var payload = new OrderStatusPatchDTO { Status = dto.Status };
+            var payload = new { status = dto.Status };
 
+            var json = JsonSerializer.Serialize(payload);
             var request = new HttpRequestMessage(HttpMethod.Patch, $"api/orders/{orderId}/status")
             {
-                Content = JsonContent.Create(payload)
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
             };
 
             var response = await _httpClient.SendAsync(request);
