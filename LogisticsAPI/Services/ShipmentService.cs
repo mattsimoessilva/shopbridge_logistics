@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using LogisticsAPI.Gateways.Interfaces;
 using LogisticsAPI.Models;
+using LogisticsAPI.Models.DTOs.External.OrderService;
 using LogisticsAPI.Models.DTOs.Shipment;
 using LogisticsAPI.Models.Entities;
 using LogisticsAPI.Models.Enums.Shipment;
 using LogisticsAPI.Repositories.Interfaces;
 using LogisticsAPI.Services.Interfaces;
+using LogisticsAPI.Utils;
 using Microsoft.Extensions.FileSystemGlobbing;
 using System.Linq;
 
@@ -13,11 +16,13 @@ namespace LogisticsAPI.Services
     public class ShipmentService : IShipmentService
     {
         private readonly IShipmentRepository _repository;
+        private readonly IOrderServiceGateway _gateway;
         private readonly IMapper _mapper;
 
-        public ShipmentService(IShipmentRepository repository, IMapper mapper)
+        public ShipmentService(IShipmentRepository repository, IOrderServiceGateway gateway, IMapper mapper)
         {
             _repository = repository;
+            _gateway = gateway;
             _mapper = mapper;
         }
 
@@ -29,7 +34,7 @@ namespace LogisticsAPI.Services
             var entity = _mapper.Map<Shipment>(dto);
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
-            entity.Status = ShipmentStatus.Pending;
+            entity.Status = ShipmentStatus.Processing;
             entity.TrackingCode = $"TRK-{Guid.NewGuid().ToString("N")[..8].ToUpper()}";
 
             await _repository.AddAsync(entity);
@@ -95,20 +100,23 @@ namespace LogisticsAPI.Services
             if (!Enum.TryParse<ShipmentStatus>(dto.Status, true, out var patch))
                 throw new ArgumentException($"Invalid status value: {dto.Status}", nameof(dto.Status));
 
-            var allowedTransitions = new Dictionary<ShipmentStatus, HashSet<ShipmentStatus>>
-            {
-                { ShipmentStatus.Pending,     new HashSet<ShipmentStatus> { ShipmentStatus.Processing, ShipmentStatus.Cancelled } },
-                { ShipmentStatus.Processing,  new HashSet<ShipmentStatus> { ShipmentStatus.InTransit, ShipmentStatus.Cancelled } },
-                { ShipmentStatus.InTransit,   new HashSet<ShipmentStatus> { ShipmentStatus.Completed, ShipmentStatus.Cancelled } },
-                { ShipmentStatus.Completed,   new HashSet<ShipmentStatus>() },
-                { ShipmentStatus.Cancelled,   new HashSet<ShipmentStatus>() }
-            };
+            if (!ShipmentStatusUtil.IsValidTransition(existing.Status, patch))
+                throw new InvalidOperationException($"Invalid transition {existing.Status} → {patch}");
 
-            if (!allowedTransitions.TryGetValue(existing.Status, out var validNextStates)
-                || !validNextStates.Contains(patch))
+            var orderStatus = ShipmentStatusUtil.MapToOrderStatus(patch);
+
+            if (orderStatus != null)
             {
-                throw new InvalidOperationException(
-                    $"Inappropriate status transition: {existing.Status} → {patch}");
+                var success = await _gateway.UpdateOrderStatusAsync(
+                    existing.OrderId,
+                    new OrderStatusPatchDTO { Status = orderStatus }
+                );
+
+                if (!success)
+                {
+                    throw new InvalidOperationException(
+                        $"Failed to update Order {existing.OrderId} status to {orderStatus}. Shipment not updated.");
+                }
             }
 
             existing.Status = patch;

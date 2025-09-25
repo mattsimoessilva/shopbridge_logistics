@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
 using LogisticsAPI.Gateways.Interfaces;
-using LogisticsAPI.Models.External.ViaCep;
+using LogisticsAPI.Models.DTOs.External.ViaCep;
 using LogisticsAPI.Models.Inputs;
 using LogisticsAPI.Models.ValueObjects;
 

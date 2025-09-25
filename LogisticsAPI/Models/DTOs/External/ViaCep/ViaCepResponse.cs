@@ -1,4 +1,4 @@
-﻿namespace LogisticsAPI.Models.External.ViaCep
+﻿namespace LogisticsAPI.Models.DTOs.External.ViaCep
 {
     public class ViaCepResponse
     {
