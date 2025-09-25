@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LogisticsAPI.Models.Enums.Shipment;
+using System.ComponentModel.DataAnnotations;
 
 namespace LogisticsAPI.Models.Entities
 {
@@ -12,7 +13,7 @@ namespace LogisticsAPI.Models.Entities
 
         [Required]
         [MaxLength(50)]
-        public required string Status { get; set; }
+        public required ShipmentStatus Status { get; set; }
 
         public DateOnly? DispatchDate { get; set; }
         public DateOnly? ExpectedArrival { get; set; }

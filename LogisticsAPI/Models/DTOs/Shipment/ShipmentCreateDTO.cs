@@ -7,10 +7,6 @@ namespace LogisticsAPI.Models.DTOs.Shipment
         [Required]
         public required Guid OrderId { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public required string Status { get; set; } 
-
         public DateOnly? DispatchDate { get; set; }
 
         [Required]

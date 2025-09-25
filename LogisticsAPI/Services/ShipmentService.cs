@@ -2,9 +2,11 @@
 using LogisticsAPI.Models;
 using LogisticsAPI.Models.DTOs.Shipment;
 using LogisticsAPI.Models.Entities;
+using LogisticsAPI.Models.Enums.Shipment;
 using LogisticsAPI.Repositories.Interfaces;
 using LogisticsAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.FileSystemGlobbing;
+using System.Linq;
 
 namespace LogisticsAPI.Services
 {
@@ -27,6 +29,7 @@ namespace LogisticsAPI.Services
             var entity = _mapper.Map<Shipment>(dto);
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
+            entity.Status = ShipmentStatus.Pending;
             entity.TrackingCode = $"TRK-{Guid.NewGuid().ToString("N")[..8].ToUpper()}";
 
             await _repository.AddAsync(entity);
@@ -41,9 +44,7 @@ namespace LogisticsAPI.Services
             if (entities == null || !entities.Any())
                 return Enumerable.Empty<ShipmentReadDTO>();
 
-            var result = _mapper.Map<IEnumerable<ShipmentReadDTO>>(entities);
-
-            return result;
+            return _mapper.Map<IEnumerable<ShipmentReadDTO>>(entities);
         }
 
         public async Task<ShipmentReadDTO?> GetByIdAsync(Guid id)
@@ -53,10 +54,7 @@ namespace LogisticsAPI.Services
 
             var entity = await _repository.GetByIdAsync(id);
 
-            if (entity is null)
-                return null;
-
-            return _mapper.Map<ShipmentReadDTO>(entity);
+            return entity is null ? null : _mapper.Map<ShipmentReadDTO>(entity);
         }
 
         public async Task<bool> UpdateAsync(ShipmentUpdateDTO dto)
@@ -75,13 +73,13 @@ namespace LogisticsAPI.Services
 
             return true;
         }
+
         public async Task<bool> DeleteAsync(Guid id)
         {
             if (id == Guid.Empty)
                 throw new ArgumentException("Invalid ID", nameof(id));
 
             await _repository.DeleteAsync(id);
-
             return true;
         }
 
@@ -90,20 +88,35 @@ namespace LogisticsAPI.Services
             if (id == Guid.Empty)
                 throw new ArgumentException("Invalid ID", nameof(id));
 
-            if (string.IsNullOrWhiteSpace(dto.Status))
-                throw new ArgumentException("Status cannot be null or empty.", nameof(dto.Status));
-
             var existing = await _repository.GetByIdAsync(id);
             if (existing == null)
                 return false;
 
-            existing.Status = dto.Status;
+            if (!Enum.TryParse<ShipmentStatus>(dto.Status, true, out var patch))
+                throw new ArgumentException($"Invalid status value: {dto.Status}", nameof(dto.Status));
+
+            var allowedTransitions = new Dictionary<ShipmentStatus, HashSet<ShipmentStatus>>
+            {
+                { ShipmentStatus.Pending,     new HashSet<ShipmentStatus> { ShipmentStatus.Processing, ShipmentStatus.Cancelled } },
+                { ShipmentStatus.Processing,  new HashSet<ShipmentStatus> { ShipmentStatus.InTransit, ShipmentStatus.Cancelled } },
+                { ShipmentStatus.InTransit,   new HashSet<ShipmentStatus> { ShipmentStatus.Completed, ShipmentStatus.Cancelled } },
+                { ShipmentStatus.Completed,   new HashSet<ShipmentStatus>() },
+                { ShipmentStatus.Cancelled,   new HashSet<ShipmentStatus>() }
+            };
+
+            if (!allowedTransitions.TryGetValue(existing.Status, out var validNextStates)
+                || !validNextStates.Contains(patch))
+            {
+                throw new InvalidOperationException(
+                    $"Inappropriate status transition: {existing.Status} → {patch}");
+            }
+
+            existing.Status = patch;
             existing.UpdatedAt = DateTime.UtcNow;
 
             await _repository.UpdateAsync(existing);
 
             return true;
         }
-
     }
 }

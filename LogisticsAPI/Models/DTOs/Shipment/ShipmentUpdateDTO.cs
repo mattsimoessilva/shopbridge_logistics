@@ -6,9 +6,6 @@ namespace LogisticsAPI.Models.DTOs.Shipment
     {
         public Guid Id { get; set; }
 
-        [MaxLength(50)]
-        public string? Status { get; set; }
-
         public DateOnly? DispatchDate { get; set; }
 
         public DateOnly? ExpectedArrival { get; set; }

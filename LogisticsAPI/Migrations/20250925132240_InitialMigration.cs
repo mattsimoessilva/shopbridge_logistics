@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LogisticsAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace LogisticsAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     OrderId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", maxLength: 50, nullable: false),
                     DispatchDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     ExpectedArrival = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     TrackingCode = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
