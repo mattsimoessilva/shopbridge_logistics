@@ -107,7 +107,7 @@ You can run the service locally via Docker Compose (from the orchestration repos
 dotnet run --project LogisticsAPI.csproj
 ```
 
-The API will be available at **http://localhost:5001**.
+The API will be available at **http://localhost:8001**.
 
 ---
 
