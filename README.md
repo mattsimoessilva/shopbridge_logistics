@@ -186,9 +186,6 @@ dotnet test --filter FullyQualifiedName~Namespace.ClassName.MethodName
 | PUT    | `/api/shipments`                  | Update an existing shipment record.                                         |
 | DELETE | `/api/shipments/{id}`             | Delete a shipment record by its unique ID.                                  |
 | PATCH  | `/api/shipments/{id}/status`      | Update only the status of a shipment record.                                |
-| POST   | `/api/shipments/{id}/reserve`     | Reserve stock for the specified shipment.                                   |
-| POST   | `/api/shipments/{id}/release`     | Release previously reserved stock for the specified shipment.               |
-| PATCH  | `/api/shipments/{id}/quantity`    | Adjust the shipment quantity by permanently reducing available stock.       |
 
 ---
 
