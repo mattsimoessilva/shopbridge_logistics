@@ -20,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Adding EF Core with Sqlite.
 builder.Services.AddDbContext<LogisticsAppDbContext>(options =>
-    options.UseSqlite("Data Source=Data/database.db"));
+    options.UseSqlite("Data Source=Storage/database.db"));
 
 // Adding AutoMapper
 builder.Services.AddAutoMapper(cfg =>
