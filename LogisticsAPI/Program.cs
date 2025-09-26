@@ -96,17 +96,13 @@ using (var scope = app.Services.CreateScope())
     DbInitializer.Initialize(db);
 }
 
-// --- Middleware & Swagger ---
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-else
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopBridge - Product Service v1");
+});
+
+
 
 
 app.UseCors("AllowAll");
