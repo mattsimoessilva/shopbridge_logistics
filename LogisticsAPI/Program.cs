@@ -15,12 +15,19 @@ using System;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DotNetEnv;
+
+// --- Load .env if it exists ---
+Env.Load(); 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adding EF Core with Sqlite.
+// --- Database connection ---
+var dbPath = Environment.GetEnvironmentVariable("LOGISTICS_DB_PATH")
+             ?? "Storage/database.db"; 
 builder.Services.AddDbContext<LogisticsAppDbContext>(options =>
-    options.UseSqlite("Data Source=Storage/database.db"));
+    options.UseSqlite($"Data Source={dbPath}"));
+
 
 // Adding AutoMapper
 builder.Services.AddAutoMapper(cfg =>
@@ -72,30 +79,30 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Applying migrations.
+// --- Apply migrations & seed database ---
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<LogisticsAppDbContext>();
     db.Database.Migrate();
+    DbInitializer.Initialize(db);
 }
 
-// Initializing database
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<LogisticsAppDbContext>();
-    DbInitializer.Initialize(context);
-}
-
-// Configuring the HTTP request pipeline.
+// --- Middleware & Swagger ---
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-app.UseSwagger();
-app.UseSwaggerUI();
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+// --- Run using .env port or default ---
+var port = Environment.GetEnvironmentVariable("LOGISTICS_SERVICE_PORT") ?? "8000";
+app.Urls.Add($"http://*:{port}");
 app.Run();
