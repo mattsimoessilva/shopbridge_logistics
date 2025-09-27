@@ -10,6 +10,7 @@ Developed using **ASP.NET Core**, the service follows a layered architecture and
  
 - [Repository Structure](#repository-structure) 
 - [Service Design Overview](#service-design-overview)
+- [External Services Communication ](#external-services-communication)
 - [Prerequisites](#prerequisites) 
 - [Getting Started](#getting-started)  
 - [Managing the Database](#managing-the-database)
@@ -120,6 +121,23 @@ flowchart TD
 - **Repositories** abstract persistence, making the service database-agnostic.  
 - **Migrations** ensure schema evolution is tracked and reproducible.  
 - **Tests** validate each layer independently (unit + integration).  
+
+---
+
+## External Services Communication
+
+The Logistics Service integrates with the public [ViaCEP API](https://viacep.com.br/) to validate addresses and retrieve CEP (postal code) information. This ensures accurate shipping data and minimizes errors when processing shipment requests.
+
+- **Usage license:** Free for public use, no authentication required.  
+- **Registration:** Not required.  
+- **Endpoints utilized:**
+  - `GET https://viacep.com.br/ws/{cep}/json/` – Retrieves complete address details for the specified CEP.  
+
+All data returned by the external API is consumed and processed internally by the Logistics Service. The service does **not** redirect users to any external application; all external data handling is performed programmatically within the service.
+
+- **Notes:**  
+  - Currently supports only Brazilian postal codes (CEPs).  
+  - Responses are normalized and mapped to internal address entities for consistency across the system.  
 
 ---
 
