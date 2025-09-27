@@ -6,6 +6,20 @@ Developed using **ASP.NET Core**, the service follows a layered architecture and
 
 ---
 
+## Table of Contents
+ 
+- [Repository Structure](#repository-structure) 
+- [Service Design Overview](#service-design-overview)
+- [Prerequisites](#prerequisites) 
+- [Getting Started](#getting-started)  
+- [Managing the Database](#managing-the-database)
+- [Running Unit Tests](#running-unit-tests)
+- [API Endpoints](#api-endpoints)
+- [Notes](#notes) 
+- [References](#references) 
+
+---
+
 ## Repository Structure
 
 ```
@@ -106,6 +120,32 @@ flowchart TD
 - **Repositories** abstract persistence, making the service database-agnostic.  
 - **Migrations** ensure schema evolution is tracked and reproducible.  
 - **Tests** validate each layer independently (unit + integration).  
+
+---
+
+## Prerequisites
+
+Before using this repository, ensure the following software is installed and properly configured:
+
+- **.NET 7 SDK (or compatible version)**  
+  - Required to build and run the ASP.NET Core Logistics Service locally.  
+  - Ensure `dotnet` is available in your PATH.  
+  - Verify installation with:
+    ```bash
+    dotnet --version
+    ```
+
+- **Git** >= 2.30  
+  - Required for cloning the repository, managing submodules, and version control.  
+  - Recommended to configure your global username and email:
+    ```bash
+    git config --global user.name "Your Name"
+    git config --global user.email "you@example.com"
+    ```
+
+- **SQLite**  
+  - Used as the default local database for development and testing.  
+  - No separate installation is needed as EF Core can manage SQLite databases automatically.
 
 ---
 
