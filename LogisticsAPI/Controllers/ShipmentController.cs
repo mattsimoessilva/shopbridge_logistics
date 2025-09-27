@@ -73,20 +73,20 @@ namespace LogisticsAPI.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [SwaggerOperation(Summary = "Update an existing shipment record.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update([FromBody] ShipmentUpdateDTO dto)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] ShipmentUpdateDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             try
             {
-                var success = await _service.UpdateAsync(dto);
+                var success = await _service.UpdateAsync(id, dto);
                 if (!success)
                     return NotFound();
 

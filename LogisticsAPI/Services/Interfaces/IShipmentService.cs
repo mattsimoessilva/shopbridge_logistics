@@ -8,8 +8,10 @@ namespace LogisticsAPI.Services.Interfaces
         public Task<ShipmentReadDTO> CreateAsync(ShipmentCreateDTO dto);
         public Task<IEnumerable<ShipmentReadDTO>> GetAllAsync();
         public Task<ShipmentReadDTO?> GetByIdAsync(Guid id);
-        Task<bool> UpdateStatusAsync(Guid id, ShipmentStatusPatchDTO dto);
+        public Task<bool> UpdateAsync(Guid id, ShipmentUpdateDTO dto);
         public Task<bool> DeleteAsync(Guid id);
-        public Task<bool> UpdateAsync(ShipmentUpdateDTO dto);
+        Task<bool> UpdateStatusAsync(Guid id, ShipmentStatusPatchDTO dto);
+
+
     }
 }
