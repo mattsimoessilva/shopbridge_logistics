@@ -4,7 +4,6 @@ namespace LogisticsAPI.Models.DTOs.Shipment
 {
     public class ShipmentUpdateDTO
     {
-        public Guid Id { get; set; }
 
         public DateOnly? DispatchDate { get; set; }
 

@@ -69,6 +69,11 @@ namespace LogisticsAPI.Services
             if (existing == null)
                 return false;
 
+            if (existing.Status != ShipmentStatus.Processing)
+                throw new InvalidOperationException(
+                    $"Shipment {id} cannot be updated once it is {existing.Status}."
+                );
+
             _mapper.Map(dto, existing);
             existing.UpdatedAt = DateTime.UtcNow;
 
@@ -76,6 +81,7 @@ namespace LogisticsAPI.Services
 
             return true;
         }
+
 
         public async Task<bool> DeleteAsync(Guid id)
         {
